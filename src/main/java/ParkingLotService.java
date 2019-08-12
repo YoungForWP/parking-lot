@@ -17,6 +17,6 @@ class ParkingLotService {
     if (!cars.containsKey(ticket)) {
       throw new IllegalTicketException();
     }
-    return cars.get(ticket);
+    return cars.remove(ticket);
   }
 }

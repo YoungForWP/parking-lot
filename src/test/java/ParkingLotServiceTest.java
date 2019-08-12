@@ -35,4 +35,11 @@ public class ParkingLotServiceTest {
   public void shouldThrowExceptionWhenPickUpACarWithIllegalTicket() {
     parkingLotService.pickUp(new Ticket());
   }
+
+  @Test(expected = IllegalTicketException.class)
+  public void shouldThrowExceptionWhenParkOneTimeButPickUpTwoTimes() {
+    Ticket ticket = parkingLotService.park(new Car());
+    parkingLotService.pickUp(ticket);
+    parkingLotService.pickUp(ticket);
+  }
 }
