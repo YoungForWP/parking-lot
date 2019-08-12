@@ -1,3 +1,4 @@
+import exception.IllegalTicketException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,7 +11,7 @@ public class ParkingLotServiceTest {
 
   @Before
   public void setUp() {
-   parkingLotService = new ParkingLotService();
+    parkingLotService = new ParkingLotService();
   }
 
   @Test
@@ -28,5 +29,10 @@ public class ParkingLotServiceTest {
     Car actual = parkingLotService.pickUp(ticket);
 
     assertEquals(expected, actual);
+  }
+
+  @Test(expected = IllegalTicketException.class)
+  public void shouldThrowExceptionWhenPickUpACarWithIllegalTicket() {
+    parkingLotService.pickUp(new Ticket());
   }
 }

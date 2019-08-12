@@ -1,17 +1,22 @@
+import exception.IllegalTicketException;
+
 import java.util.HashMap;
 import java.util.Map;
 
-public class ParkingLotService {
+class ParkingLotService {
 
   private Map<Ticket, Car> cars = new HashMap<>();
 
-  public Ticket park(Car car) {
+  Ticket park(Car car) {
     Ticket ticket = new Ticket();
     cars.put(ticket, car);
     return ticket;
   }
 
-  public Car pickUp(Ticket ticket) {
+  Car pickUp(Ticket ticket) {
+    if (!cars.containsKey(ticket)) {
+      throw new IllegalTicketException();
+    }
     return cars.get(ticket);
   }
 }
