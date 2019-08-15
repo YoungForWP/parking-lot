@@ -1,4 +1,5 @@
 import exception.IllegalTicketException;
+import exception.NoParkingSpaceLeftException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -7,10 +8,12 @@ import static org.junit.Assert.assertNotNull;
 
 public class ParkingBoyServiceTest {
   private ParkingBoyService parkingBoyService;
+  private ParkingLot parkingLot;
 
   @Before
   public void setUp() {
-    parkingBoyService = new ParkingBoyService();
+    parkingLot = new ParkingLot(1);
+    parkingBoyService = new ParkingBoyService(parkingLot);
   }
 
   @Test
@@ -40,5 +43,13 @@ public class ParkingBoyServiceTest {
     Ticket ticket = parkingBoyService.park(new Car());
     parkingBoyService.pickUp(ticket);
     parkingBoyService.pickUp(ticket);
+  }
+
+  @Test(expected = NoParkingSpaceLeftException.class)
+  public void shouldThrowExceptionWhenParkingLotHasNoCapacity() {
+    parkingLot = new ParkingLot(0);
+    parkingBoyService = new ParkingBoyService(parkingLot);
+    Car car = new Car();
+    parkingBoyService.park(car);
   }
 }
