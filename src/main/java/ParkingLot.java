@@ -1,12 +1,14 @@
+import java.util.List;
+
 public class ParkingLot {
 
-  private int capacity;
+  private List<Area> areas;
 
-  public ParkingLot(int capacity) {
-    this.capacity = capacity;
+  public ParkingLot(List<Area> areas) {
+    this.areas = areas;
   }
 
-  public int getCapacity() {
-    return capacity;
+  public List<Area> getAreas() {
+    return areas;
   }
 }
