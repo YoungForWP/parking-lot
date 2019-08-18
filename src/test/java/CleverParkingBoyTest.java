@@ -97,6 +97,43 @@ public class CleverParkingBoyTest {
     assertEquals(actual, expected);
   }
 
+  @Test
+  public void shouldParkInAreaAWhenAreaAVacancyRateEqualsToAreaB() {
+    Area areaA = new Area(3);
+    Area areaB = new Area(3);
+
+    parkingLot = new ParkingLot(createAreas(areaA, areaB));
+    cleverParkingBoy = new CleverParkingBoy(parkingLot);
+
+    Car expected = new Car();
+    Ticket ticket = cleverParkingBoy.park(expected);
+    Car actual = areaA.pickUp(ticket);
+
+    assertEquals(actual, expected);
+  }
+
+  @Test
+  public void shouldParkInAreaBWhenAreaAVacancyRateLowerThanAreaBButAreaBIsEqualToAreaC() {
+    Area areaA = new Area(5);
+    Area areaB = new Area(4);
+    Area areaC = new Area(4);
+
+    areaA.park(new Car());
+    areaA.park(new Car());
+    areaB.park(new Car());
+    areaC.park(new Car());
+
+    parkingLot = new ParkingLot(createAreas(areaA, areaB, areaC));
+    cleverParkingBoy = new CleverParkingBoy(parkingLot);
+
+    Car expected = new Car();
+    Ticket ticket = cleverParkingBoy.park(expected);
+    Car actual = areaB.pickUp(ticket);
+
+    assertEquals(actual, expected);
+  }
+
+
   private List<Area> createAreas(Area... areas) {
     ArrayList<Area> list = new ArrayList<>(areas.length);
     Collections.addAll(list, areas);
