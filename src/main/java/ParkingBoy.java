@@ -3,9 +3,9 @@ import exception.NoParkingSpaceLeftException;
 
 import java.util.Comparator;
 
-public class ParkingBoy implements Parking {
+public abstract class ParkingBoy implements Parking {
 
-  private ParkingLot parkingLot;
+  protected ParkingLot parkingLot;
 
   public ParkingBoy(ParkingLot parkingLot) {
     this.parkingLot = parkingLot;

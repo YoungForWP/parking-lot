@@ -10,21 +10,21 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class ParkingBoyTest {
-  private ParkingBoy parkingBoy;
+public class StupidParkingBoyTest {
+  private StupidParkingBoy stupidParkingBoy;
   private ParkingLot parkingLot;
 
   @Before
   public void setUp() {
     Area area = new Area( 2);
     parkingLot = new ParkingLot(createAreas(area));
-    parkingBoy = new ParkingBoy(parkingLot);
+    stupidParkingBoy = new StupidParkingBoy(parkingLot);
   }
 
   @Test
   public void shouldReturnATicketWhenParkingACar() {
     Car car = new Car();
-    Ticket ticket = parkingBoy.park(car);
+    Ticket ticket = stupidParkingBoy.park(car);
 
     assertNotNull(ticket);
   }
@@ -32,31 +32,31 @@ public class ParkingBoyTest {
   @Test
   public void shouldPickUpACarWithATicket() {
     Car expected = new Car();
-    Ticket ticket = parkingBoy.park(expected);
-    Car actual = parkingBoy.pickUp(ticket);
+    Ticket ticket = stupidParkingBoy.park(expected);
+    Car actual = stupidParkingBoy.pickUp(ticket);
 
     assertEquals(expected, actual);
   }
 
   @Test(expected = IllegalTicketException.class)
   public void shouldThrowExceptionWhenPickUpACarWithIllegalTicket() {
-    parkingBoy.pickUp(new Ticket());
+    stupidParkingBoy.pickUp(new Ticket());
   }
 
   @Test(expected = IllegalTicketException.class)
   public void shouldThrowExceptionWhenParkOneTimeButPickUpTwoTimes() {
-    Ticket ticket = parkingBoy.park(new Car());
-    parkingBoy.pickUp(ticket);
-    parkingBoy.pickUp(ticket);
+    Ticket ticket = stupidParkingBoy.park(new Car());
+    stupidParkingBoy.pickUp(ticket);
+    stupidParkingBoy.pickUp(ticket);
   }
 
   @Test(expected = NoParkingSpaceLeftException.class)
   public void shouldThrowExceptionWhenParkingLotHasNoCapacity() {
     Area area = new Area( 0);
     parkingLot = new ParkingLot(createAreas(area));
-    parkingBoy = new ParkingBoy(parkingLot);
+    stupidParkingBoy = new StupidParkingBoy(parkingLot);
     Car car = new Car();
-    parkingBoy.park(car);
+    stupidParkingBoy.park(car);
   }
 
   @Test
@@ -65,10 +65,10 @@ public class ParkingBoyTest {
     Area areaB = new Area(2);
 
     parkingLot = new ParkingLot(createAreas(areaA, areaB));
-    parkingBoy = new ParkingBoy(parkingLot);
+    stupidParkingBoy = new StupidParkingBoy(parkingLot);
 
     Car expected = new Car();
-    Ticket ticket = parkingBoy.park(expected);
+    Ticket ticket = stupidParkingBoy.park(expected);
     Car actual = areaB.pickUp(ticket);
 
     assertEquals(actual, expected);
@@ -84,10 +84,10 @@ public class ParkingBoyTest {
     areaB.park(new Car());
 
     parkingLot = new ParkingLot(createAreas(areaA, areaB));
-    parkingBoy = new ParkingBoy(parkingLot);
+    stupidParkingBoy = new StupidParkingBoy(parkingLot);
 
     Car expected = new Car();
-    Ticket ticket = parkingBoy.park(expected);
+    Ticket ticket = stupidParkingBoy.park(expected);
     Car actual = areaB.pickUp(ticket);
 
     assertEquals(actual, expected);
@@ -102,10 +102,10 @@ public class ParkingBoyTest {
     areaB.park(new Car());
 
     parkingLot = new ParkingLot(createAreas(areaA, areaB));
-    parkingBoy = new ParkingBoy(parkingLot);
+    stupidParkingBoy = new StupidParkingBoy(parkingLot);
 
     Car expected = new Car();
-    Ticket ticket = parkingBoy.park(expected);
+    Ticket ticket = stupidParkingBoy.park(expected);
     Car actual = areaA.pickUp(ticket);
 
     assertEquals(actual, expected);
@@ -124,10 +124,10 @@ public class ParkingBoyTest {
     areaC.park(new Car());
 
     parkingLot = new ParkingLot(createAreas(areaA, areaB, areaC));
-    parkingBoy = new ParkingBoy(parkingLot);
+    stupidParkingBoy = new StupidParkingBoy(parkingLot);
 
     Car expected = new Car();
-    Ticket ticket = parkingBoy.park(expected);
+    Ticket ticket = stupidParkingBoy.park(expected);
     Car actual = areaB.pickUp(ticket);
 
     assertEquals(actual, expected);
