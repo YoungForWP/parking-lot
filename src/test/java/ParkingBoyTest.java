@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -16,9 +17,7 @@ public class ParkingBoyTest {
   @Before
   public void setUp() {
     Area area = new Area( 2);
-    ArrayList<Area> areas = new ArrayList<>();
-    areas.add(area);
-    parkingLot = new ParkingLot(areas);
+    parkingLot = new ParkingLot(createAreas(area));
     parkingBoy = new ParkingBoy(parkingLot);
   }
 
@@ -54,9 +53,7 @@ public class ParkingBoyTest {
   @Test(expected = NoParkingSpaceLeftException.class)
   public void shouldThrowExceptionWhenParkingLotHasNoCapacity() {
     Area area = new Area( 0);
-    ArrayList<Area> areas = new ArrayList<>();
-    areas.add(area);
-    parkingLot = new ParkingLot(areas);
+    parkingLot = new ParkingLot(createAreas(area));
     parkingBoy = new ParkingBoy(parkingLot);
     Car car = new Car();
     parkingBoy.park(car);
@@ -66,11 +63,8 @@ public class ParkingBoyTest {
   public void shouldParkCarInAreaBWhenAreaAHasNoSpace() {
     Area areaA = new Area(0);
     Area areaB = new Area(2);
-    ArrayList<Area> areas = new ArrayList<>();
-    areas.add(areaA);
-    areas.add(areaB);
 
-    parkingLot = new ParkingLot(areas);
+    parkingLot = new ParkingLot(createAreas(areaA, areaB));
     parkingBoy = new ParkingBoy(parkingLot);
 
     Car expected = new Car();
@@ -85,15 +79,11 @@ public class ParkingBoyTest {
     Area areaA = new Area(5);
     Area areaB = new Area(5);
 
-    ArrayList<Area> areas = new ArrayList<>();
-    areas.add(areaA);
-    areas.add(areaB);
-
     areaA.park(new Car());
     areaA.park(new Car());
     areaB.park(new Car());
 
-    parkingLot = new ParkingLot(areas);
+    parkingLot = new ParkingLot(createAreas(areaA, areaB));
     parkingBoy = new ParkingBoy(parkingLot);
 
     Car expected = new Car();
@@ -108,14 +98,10 @@ public class ParkingBoyTest {
     Area areaA = new Area(5);
     Area areaB = new Area(5);
 
-    List<Area> areas = new ArrayList<>();
-    areas.add(areaA);
-    areas.add(areaB);
-
     areaA.park(new Car());
     areaB.park(new Car());
 
-    parkingLot = new ParkingLot(areas);
+    parkingLot = new ParkingLot(createAreas(areaA, areaB));
     parkingBoy = new ParkingBoy(parkingLot);
 
     Car expected = new Car();
@@ -124,5 +110,33 @@ public class ParkingBoyTest {
 
     assertEquals(actual, expected);
 
+  }
+
+  @Test
+  public void shouldParkInAreaBWhenAreaALeftLessThanAreaBAndAreaBLeftEqualToAreaC() {
+    Area areaA = new Area(5);
+    Area areaB = new Area(5);
+    Area areaC = new Area(5);
+
+    areaA.park(new Car());
+    areaA.park(new Car());
+    areaB.park(new Car());
+    areaC.park(new Car());
+
+    parkingLot = new ParkingLot(createAreas(areaA, areaB, areaC));
+    parkingBoy = new ParkingBoy(parkingLot);
+
+    Car expected = new Car();
+    Ticket ticket = parkingBoy.park(expected);
+    Car actual = areaB.pickUp(ticket);
+
+    assertEquals(actual, expected);
+
+  }
+
+  private List<Area> createAreas(Area... areas) {
+    ArrayList<Area> list = new ArrayList<>(areas.length);
+    Collections.addAll(list, areas);
+    return list;
   }
 }
