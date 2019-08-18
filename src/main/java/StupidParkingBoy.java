@@ -1,9 +1,9 @@
 import java.math.BigDecimal;
 import java.util.function.Function;
 
-public class StupidParkingBoy extends ParkingBoy {
+public class StupidParkingBoy extends AbstractParkingBoy {
 
-  public StupidParkingBoy(ParkingLot parkingLot) {
+  StupidParkingBoy(ParkingLot parkingLot) {
     super(parkingLot);
   }
 

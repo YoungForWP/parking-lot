@@ -5,13 +5,15 @@ import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.function.Function;
 
-public abstract class ParkingBoy implements Parking, SortFunction {
+public abstract class AbstractParkingBoy implements Parking {
 
-  protected ParkingLot parkingLot;
+  private ParkingLot parkingLot;
 
-  public ParkingBoy(ParkingLot parkingLot) {
+  AbstractParkingBoy(ParkingLot parkingLot) {
     this.parkingLot = parkingLot;
   }
+
+  abstract Function<Area, BigDecimal> getSortMethod();
 
   @Override
   public Ticket park(Car car) {
@@ -30,10 +32,5 @@ public abstract class ParkingBoy implements Parking, SortFunction {
         .findFirst()
         .map(area -> area.pickUp(ticket))
         .orElseThrow(IllegalTicketException::new);
-  }
-
-  @Override
-  public Function<Area, BigDecimal> getSortMethod() {
-    return null;
   }
 }
