@@ -1,8 +1,11 @@
 import exception.IllegalTicketException;
 import exception.NoParkingSpaceLeftException;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
+
+import static java.math.BigDecimal.valueOf;
 
 public class Area implements Parking {
   private int capacity;
@@ -14,7 +17,7 @@ public class Area implements Parking {
 
   @Override
   public Ticket park(Car car) {
-    if (getCapacity() <= 0) {
+    if (getCapacity().intValue() <= 0) {
       throw new NoParkingSpaceLeftException();
     }
     Ticket ticket = new Ticket();
@@ -30,11 +33,15 @@ public class Area implements Parking {
     return cars.remove(ticket);
   }
 
-  public int getCapacity() {
-    return capacity - cars.size();
+  BigDecimal getCapacity() {
+    return BigDecimal.valueOf(capacity - cars.size());
   }
 
-  public Map<Ticket, Car> getCars() {
+  BigDecimal getVacancyRate() {
+    return getCapacity().divide(valueOf(capacity));
+  }
+
+  Map<Ticket, Car> getCars() {
     return cars;
   }
 }

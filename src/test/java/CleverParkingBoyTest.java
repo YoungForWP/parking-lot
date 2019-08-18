@@ -63,11 +63,32 @@ public class CleverParkingBoyTest {
 
   @Test
   public void shouldParkCarInAreaBWhenAreaAHasNoSpace() {
-    Area areaA = new Area(0);
+    Area areaA = new Area(1);
     Area areaB = new Area(2);
 
     parkingLot = new ParkingLot(createAreas(areaA, areaB));
     cleverParkingBoy = new CleverParkingBoy(parkingLot);
+
+    areaA.park(new Car());
+
+    Car expected = new Car();
+    Ticket ticket = cleverParkingBoy.park(expected);
+    Car actual = areaB.pickUp(ticket);
+
+    assertEquals(actual, expected);
+  }
+
+  @Test
+  public void shouldParkInAreaBWhenAreaBVacancyRateHigherThanAreaA() {
+    Area areaA = new Area(5);
+    Area areaB = new Area(4);
+
+    parkingLot = new ParkingLot(createAreas(areaA, areaB));
+    cleverParkingBoy = new CleverParkingBoy(parkingLot);
+
+    areaA.park(new Car());
+    areaA.park(new Car());
+    areaB.park(new Car());
 
     Car expected = new Car();
     Ticket ticket = cleverParkingBoy.park(expected);
