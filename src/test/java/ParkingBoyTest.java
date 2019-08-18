@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -100,5 +101,28 @@ public class ParkingBoyTest {
     Car actual = areaB.pickUp(ticket);
 
     assertEquals(actual, expected);
+  }
+
+  @Test
+  public void shouldParkInAreaAWhenAreaALeftIsEqualToAreaB() {
+    Area areaA = new Area(5);
+    Area areaB = new Area(5);
+
+    List<Area> areas = new ArrayList<>();
+    areas.add(areaA);
+    areas.add(areaB);
+
+    areaA.park(new Car());
+    areaB.park(new Car());
+
+    parkingLot = new ParkingLot(areas);
+    parkingBoy = new ParkingBoy(parkingLot);
+
+    Car expected = new Car();
+    Ticket ticket = parkingBoy.park(expected);
+    Car actual = areaA.pickUp(ticket);
+
+    assertEquals(actual, expected);
+
   }
 }
