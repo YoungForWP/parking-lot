@@ -1,6 +1,8 @@
 import exception.IllegalTicketException;
 import exception.NoParkingSpaceLeftException;
 
+import java.util.Comparator;
+
 public class ParkingBoy implements Parking {
 
   private ParkingLot parkingLot;
@@ -13,8 +15,7 @@ public class ParkingBoy implements Parking {
   public Ticket park(Car car) {
     return parkingLot.getAreas()
         .stream()
-        .filter(item -> item.getCapacity() > 0)
-        .findFirst()
+        .max(Comparator.comparing(Area::getCapacity))
         .map(item -> item.park(car))
         .orElseThrow(NoParkingSpaceLeftException::new);
   }

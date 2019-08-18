@@ -78,4 +78,27 @@ public class ParkingBoyTest {
 
     assertEquals(actual, expected);
   }
+
+  @Test
+  public void shouldParkInAreaBWhenAreaBLeftMoreThanAreaA() {
+    Area areaA = new Area(5);
+    Area areaB = new Area(5);
+
+    ArrayList<Area> areas = new ArrayList<>();
+    areas.add(areaA);
+    areas.add(areaB);
+
+    areaA.park(new Car());
+    areaA.park(new Car());
+    areaB.park(new Car());
+
+    parkingLot = new ParkingLot(areas);
+    parkingBoy = new ParkingBoy(parkingLot);
+
+    Car expected = new Car();
+    Ticket ticket = parkingBoy.park(expected);
+    Car actual = areaB.pickUp(ticket);
+
+    assertEquals(actual, expected);
+  }
 }
