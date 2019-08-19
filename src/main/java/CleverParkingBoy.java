@@ -9,6 +9,6 @@ public class CleverParkingBoy extends AbstractParkingBoy {
 
   @Override
   public Function<Area, BigDecimal> getSortMethod() {
-    return Area::getVacancyRate;
+    return Area::getCapacity;
   }
 }

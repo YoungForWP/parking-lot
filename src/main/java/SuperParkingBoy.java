@@ -1,14 +1,14 @@
 import java.math.BigDecimal;
 import java.util.function.Function;
 
-public class StupidParkingBoy extends AbstractParkingBoy {
+public class SuperParkingBoy extends AbstractParkingBoy {
 
-  StupidParkingBoy(ParkingLot parkingLot) {
+  SuperParkingBoy(ParkingLot parkingLot) {
     super(parkingLot);
   }
 
   @Override
   public Function<Area, BigDecimal> getSortMethod() {
-    return Area::getCapacity;
+    return Area::getVacancyRate;
   }
 }

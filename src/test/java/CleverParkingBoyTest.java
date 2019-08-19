@@ -11,10 +11,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class CleverParkingBoyTest {
-
-  private ParkingLot parkingLot;
-
   private CleverParkingBoy cleverParkingBoy;
+  private ParkingLot parkingLot;
 
   @Before
   public void setUp() {
@@ -63,14 +61,12 @@ public class CleverParkingBoyTest {
 
   @Test
   public void shouldParkCarInAreaBWhenAreaAHasNoSpace() {
-    Area areaA = new Area(1);
+    Area areaA = new Area(0);
     Area areaB = new Area(2);
 
     parkingLot = new ParkingLot(createAreas(areaA, areaB));
     cleverParkingBoy = new CleverParkingBoy(parkingLot);
 
-    areaA.park(new Car());
-
     Car expected = new Car();
     Ticket ticket = cleverParkingBoy.park(expected);
     Car actual = areaB.pickUp(ticket);
@@ -79,17 +75,17 @@ public class CleverParkingBoyTest {
   }
 
   @Test
-  public void shouldParkInAreaBWhenAreaBVacancyRateHigherThanAreaA() {
+  public void shouldParkInAreaBWhenAreaBLeftMoreThanAreaA() {
     Area areaA = new Area(5);
-    Area areaB = new Area(4);
-
-    parkingLot = new ParkingLot(createAreas(areaA, areaB));
-    cleverParkingBoy = new CleverParkingBoy(parkingLot);
+    Area areaB = new Area(5);
 
     areaA.park(new Car());
     areaA.park(new Car());
     areaB.park(new Car());
 
+    parkingLot = new ParkingLot(createAreas(areaA, areaB));
+    cleverParkingBoy = new CleverParkingBoy(parkingLot);
+
     Car expected = new Car();
     Ticket ticket = cleverParkingBoy.park(expected);
     Car actual = areaB.pickUp(ticket);
@@ -98,9 +94,12 @@ public class CleverParkingBoyTest {
   }
 
   @Test
-  public void shouldParkInAreaAWhenAreaAVacancyRateEqualsToAreaB() {
-    Area areaA = new Area(3);
-    Area areaB = new Area(3);
+  public void shouldParkInAreaAWhenAreaALeftIsEqualToAreaB() {
+    Area areaA = new Area(5);
+    Area areaB = new Area(5);
+
+    areaA.park(new Car());
+    areaB.park(new Car());
 
     parkingLot = new ParkingLot(createAreas(areaA, areaB));
     cleverParkingBoy = new CleverParkingBoy(parkingLot);
@@ -110,13 +109,14 @@ public class CleverParkingBoyTest {
     Car actual = areaA.pickUp(ticket);
 
     assertEquals(actual, expected);
+
   }
 
   @Test
-  public void shouldParkInAreaBWhenAreaAVacancyRateLowerThanAreaBButAreaBIsEqualToAreaC() {
+  public void shouldParkInAreaBWhenAreaALeftLessThanAreaBAndAreaBLeftEqualToAreaC() {
     Area areaA = new Area(5);
-    Area areaB = new Area(4);
-    Area areaC = new Area(4);
+    Area areaB = new Area(5);
+    Area areaC = new Area(5);
 
     areaA.park(new Car());
     areaA.park(new Car());
@@ -131,8 +131,8 @@ public class CleverParkingBoyTest {
     Car actual = areaB.pickUp(ticket);
 
     assertEquals(actual, expected);
-  }
 
+  }
 
   private List<Area> createAreas(Area... areas) {
     ArrayList<Area> list = new ArrayList<>(areas.length);

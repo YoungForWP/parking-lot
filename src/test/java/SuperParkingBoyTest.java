@@ -10,21 +10,23 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class StupidParkingBoyTest {
-  private StupidParkingBoy stupidParkingBoy;
+public class SuperParkingBoyTest {
+
   private ParkingLot parkingLot;
+
+  private SuperParkingBoy superParkingBoy;
 
   @Before
   public void setUp() {
     Area area = new Area( 2);
     parkingLot = new ParkingLot(createAreas(area));
-    stupidParkingBoy = new StupidParkingBoy(parkingLot);
+    superParkingBoy = new SuperParkingBoy(parkingLot);
   }
 
   @Test
   public void shouldReturnATicketWhenParkingACar() {
     Car car = new Car();
-    Ticket ticket = stupidParkingBoy.park(car);
+    Ticket ticket = superParkingBoy.park(car);
 
     assertNotNull(ticket);
   }
@@ -32,91 +34,89 @@ public class StupidParkingBoyTest {
   @Test
   public void shouldPickUpACarWithATicket() {
     Car expected = new Car();
-    Ticket ticket = stupidParkingBoy.park(expected);
-    Car actual = stupidParkingBoy.pickUp(ticket);
+    Ticket ticket = superParkingBoy.park(expected);
+    Car actual = superParkingBoy.pickUp(ticket);
 
     assertEquals(expected, actual);
   }
 
   @Test(expected = IllegalTicketException.class)
   public void shouldThrowExceptionWhenPickUpACarWithIllegalTicket() {
-    stupidParkingBoy.pickUp(new Ticket());
+    superParkingBoy.pickUp(new Ticket());
   }
 
   @Test(expected = IllegalTicketException.class)
   public void shouldThrowExceptionWhenParkOneTimeButPickUpTwoTimes() {
-    Ticket ticket = stupidParkingBoy.park(new Car());
-    stupidParkingBoy.pickUp(ticket);
-    stupidParkingBoy.pickUp(ticket);
+    Ticket ticket = superParkingBoy.park(new Car());
+    superParkingBoy.pickUp(ticket);
+    superParkingBoy.pickUp(ticket);
   }
 
   @Test(expected = NoParkingSpaceLeftException.class)
   public void shouldThrowExceptionWhenParkingLotHasNoCapacity() {
     Area area = new Area( 0);
     parkingLot = new ParkingLot(createAreas(area));
-    stupidParkingBoy = new StupidParkingBoy(parkingLot);
+    superParkingBoy = new SuperParkingBoy(parkingLot);
     Car car = new Car();
-    stupidParkingBoy.park(car);
+    superParkingBoy.park(car);
   }
 
   @Test
   public void shouldParkCarInAreaBWhenAreaAHasNoSpace() {
-    Area areaA = new Area(0);
+    Area areaA = new Area(1);
     Area areaB = new Area(2);
 
     parkingLot = new ParkingLot(createAreas(areaA, areaB));
-    stupidParkingBoy = new StupidParkingBoy(parkingLot);
+    superParkingBoy = new SuperParkingBoy(parkingLot);
+
+    areaA.park(new Car());
 
     Car expected = new Car();
-    Ticket ticket = stupidParkingBoy.park(expected);
+    Ticket ticket = superParkingBoy.park(expected);
     Car actual = areaB.pickUp(ticket);
 
     assertEquals(actual, expected);
   }
 
   @Test
-  public void shouldParkInAreaBWhenAreaBLeftMoreThanAreaA() {
+  public void shouldParkInAreaBWhenAreaBVacancyRateHigherThanAreaA() {
     Area areaA = new Area(5);
-    Area areaB = new Area(5);
+    Area areaB = new Area(4);
+
+    parkingLot = new ParkingLot(createAreas(areaA, areaB));
+    superParkingBoy = new SuperParkingBoy(parkingLot);
 
     areaA.park(new Car());
     areaA.park(new Car());
     areaB.park(new Car());
 
-    parkingLot = new ParkingLot(createAreas(areaA, areaB));
-    stupidParkingBoy = new StupidParkingBoy(parkingLot);
-
     Car expected = new Car();
-    Ticket ticket = stupidParkingBoy.park(expected);
+    Ticket ticket = superParkingBoy.park(expected);
     Car actual = areaB.pickUp(ticket);
 
     assertEquals(actual, expected);
   }
 
   @Test
-  public void shouldParkInAreaAWhenAreaALeftIsEqualToAreaB() {
-    Area areaA = new Area(5);
-    Area areaB = new Area(5);
-
-    areaA.park(new Car());
-    areaB.park(new Car());
+  public void shouldParkInAreaAWhenAreaAVacancyRateEqualsToAreaB() {
+    Area areaA = new Area(3);
+    Area areaB = new Area(3);
 
     parkingLot = new ParkingLot(createAreas(areaA, areaB));
-    stupidParkingBoy = new StupidParkingBoy(parkingLot);
+    superParkingBoy = new SuperParkingBoy(parkingLot);
 
     Car expected = new Car();
-    Ticket ticket = stupidParkingBoy.park(expected);
+    Ticket ticket = superParkingBoy.park(expected);
     Car actual = areaA.pickUp(ticket);
 
     assertEquals(actual, expected);
-
   }
 
   @Test
-  public void shouldParkInAreaBWhenAreaALeftLessThanAreaBAndAreaBLeftEqualToAreaC() {
+  public void shouldParkInAreaBWhenAreaAVacancyRateLowerThanAreaBButAreaBIsEqualToAreaC() {
     Area areaA = new Area(5);
-    Area areaB = new Area(5);
-    Area areaC = new Area(5);
+    Area areaB = new Area(4);
+    Area areaC = new Area(4);
 
     areaA.park(new Car());
     areaA.park(new Car());
@@ -124,15 +124,15 @@ public class StupidParkingBoyTest {
     areaC.park(new Car());
 
     parkingLot = new ParkingLot(createAreas(areaA, areaB, areaC));
-    stupidParkingBoy = new StupidParkingBoy(parkingLot);
+    superParkingBoy = new SuperParkingBoy(parkingLot);
 
     Car expected = new Car();
-    Ticket ticket = stupidParkingBoy.park(expected);
+    Ticket ticket = superParkingBoy.park(expected);
     Car actual = areaB.pickUp(ticket);
 
     assertEquals(actual, expected);
-
   }
+
 
   private List<Area> createAreas(Area... areas) {
     ArrayList<Area> list = new ArrayList<>(areas.length);
