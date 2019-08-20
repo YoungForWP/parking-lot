@@ -1,17 +1,9 @@
 import exception.NoParkingSpaceLeftException;
 
-import java.math.BigDecimal;
-import java.util.function.Function;
-
 public class OrdinaryParkingBoy extends AbstractParkingBoy {
 
   OrdinaryParkingBoy(ParkingLot parkingLot) {
     super(parkingLot);
-  }
-
-  @Override
-  Function<Area, BigDecimal> getSortMethod() {
-    return null;
   }
 
   @Override

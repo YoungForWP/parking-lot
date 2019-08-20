@@ -1,5 +1,6 @@
-import java.math.BigDecimal;
-import java.util.function.Function;
+import exception.NoParkingSpaceLeftException;
+
+import java.util.Comparator;
 
 public class SuperParkingBoy extends AbstractParkingBoy {
 
@@ -8,7 +9,12 @@ public class SuperParkingBoy extends AbstractParkingBoy {
   }
 
   @Override
-  public Function<Area, BigDecimal> getSortMethod() {
-    return Area::getVacancyRate;
+  public Ticket park(Car car) {
+    return parkingLot.getAreas()
+        .stream()
+        .max(Comparator.comparing(Area::getVacancyRate))
+        .map(item -> item.park(car))
+        .orElseThrow(NoParkingSpaceLeftException::new);
   }
+
 }

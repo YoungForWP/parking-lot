@@ -7,7 +7,7 @@ import java.util.Map;
 
 import static java.math.BigDecimal.valueOf;
 
-public class Area implements Parking {
+public class Area {
   private int capacity;
   private Map<Ticket, Car> cars = new HashMap<>();
 
@@ -15,7 +15,6 @@ public class Area implements Parking {
     this.capacity = capacity;
   }
 
-  @Override
   public Ticket park(Car car) {
     if (!hasSpaceToPark()) {
       throw new NoParkingSpaceLeftException();
@@ -25,8 +24,7 @@ public class Area implements Parking {
     return ticket;
   }
 
-  @Override
-  public Car pickUp(Ticket ticket) {
+  Car pickUp(Ticket ticket) {
     if (!cars.containsKey(ticket)) {
       throw new IllegalTicketException();
     }

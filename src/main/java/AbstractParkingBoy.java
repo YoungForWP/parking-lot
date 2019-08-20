@@ -1,31 +1,16 @@
 import exception.IllegalTicketException;
-import exception.NoParkingSpaceLeftException;
 
-import java.math.BigDecimal;
-import java.util.Comparator;
-import java.util.function.Function;
+abstract class AbstractParkingBoy {
 
-public abstract class AbstractParkingBoy implements Parking {
-
-  protected ParkingLot parkingLot;
+  ParkingLot parkingLot;
 
   AbstractParkingBoy(ParkingLot parkingLot) {
     this.parkingLot = parkingLot;
   }
 
-  abstract Function<Area, BigDecimal> getSortMethod();
+  abstract Ticket park(Car car);
 
-  @Override
-  public Ticket park(Car car) {
-    return parkingLot.getAreas()
-        .stream()
-        .max(Comparator.comparing(this.getSortMethod()))
-        .map(item -> item.park(car))
-        .orElseThrow(NoParkingSpaceLeftException::new);
-  }
-
-  @Override
-  public Car pickUp(Ticket ticket) {
+  Car pickUp(Ticket ticket) {
     return parkingLot.getAreas()
         .stream()
         .filter(area -> area.getCars().containsKey(ticket))
