@@ -7,7 +7,7 @@ import java.util.function.Function;
 
 public abstract class AbstractParkingBoy implements Parking {
 
-  private ParkingLot parkingLot;
+  protected ParkingLot parkingLot;
 
   AbstractParkingBoy(ParkingLot parkingLot) {
     this.parkingLot = parkingLot;

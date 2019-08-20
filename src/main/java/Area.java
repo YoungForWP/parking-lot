@@ -17,7 +17,7 @@ public class Area implements Parking {
 
   @Override
   public Ticket park(Car car) {
-    if (getCapacity().intValue() <= 0) {
+    if (!hasSpaceToPark()) {
       throw new NoParkingSpaceLeftException();
     }
     Ticket ticket = new Ticket();
@@ -39,6 +39,10 @@ public class Area implements Parking {
 
   BigDecimal getVacancyRate() {
     return getCapacity().divide(valueOf(capacity));
+  }
+
+  boolean hasSpaceToPark() {
+    return getCapacity().intValue() > 0;
   }
 
   Map<Ticket, Car> getCars() {

@@ -62,23 +62,6 @@ public class SuperParkingBoyTest {
   }
 
   @Test
-  public void shouldParkCarInAreaBWhenAreaAHasNoSpace() {
-    Area areaA = new Area(1);
-    Area areaB = new Area(2);
-
-    parkingLot = new ParkingLot(createAreas(areaA, areaB));
-    superParkingBoy = new SuperParkingBoy(parkingLot);
-
-    areaA.park(new Car());
-
-    Car expected = new Car();
-    Ticket ticket = superParkingBoy.park(expected);
-    Car actual = areaB.pickUp(ticket);
-
-    assertEquals(actual, expected);
-  }
-
-  @Test
   public void shouldParkInAreaBWhenAreaBVacancyRateHigherThanAreaA() {
     Area areaA = new Area(5);
     Area areaB = new Area(4);
